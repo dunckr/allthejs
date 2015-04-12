@@ -1,12 +1,12 @@
 var fs = require('fs'),
   request = require('request'),
-  url = 'https://registry.npmjs.org/-/all?startkey=""',
+  url = 'https://registry.npmjs.org/-/all',
   filePath = './package.json';
 
 var updatePackages = function(cb) {
   request(url, function(err, response, body) {
     if (err) throw err;
-    if (!err && response.statusCode === 200) {
+    if (response.statusCode === 200) {
       var data = JSON.parse(body),
         json = {};
       for (var package in data) {
@@ -17,14 +17,24 @@ var updatePackages = function(cb) {
   });
 };
 
-fs.readFile(filePath, 'utf8', function(err, data) {
-  if (err) throw err;
-  var content = JSON.parse(data);
-  updatePackages(function(json) {
+var readFile = function(cb) {
+  fs.readFile(filePath, 'utf8', function(err, data) {
+    if (err) throw err;
+    var content = JSON.parse(data);
+    cb(content);
+  });
+};
+
+var writeFile = function(data) {
+  fs.writeFile(filePath, JSON.stringify(data), function(err) {
+    if (err) throw err;
+    console.log('Updated!');
+  });
+};
+
+updatePackages(function(json) {
+  readFile(function(content) {
     content.dependanices = json;
-    fs.writeFile(filePath, JSON.stringify(content), function(err) {
-      if (err) throw err;
-      console.log('Updated!');
-    });
+    writeFile(content);
   });
 });
