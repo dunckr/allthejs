@@ -2,7 +2,7 @@
 
 Stop worrying about using the best library or framework. Use them all!
 
-![Mega JS](https://raw.githubusercontent.com/dunckr/allthejs/master/assets/megaJS.jpg)
+![Mega JS](https://raw.githubusercontent.com/dunckr/allthejs/master/megaJS.jpg)
 
 ## Installation
 
